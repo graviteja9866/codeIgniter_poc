@@ -58,6 +58,9 @@ writable/uploads/*
 writable/debugbar/*
 !writable/debugbar/index.html
 
+# Misplaced session files (bug: savePath = null creates public/null/)
+public/null/
+
 php_errors.log
 
 #-------------------------
