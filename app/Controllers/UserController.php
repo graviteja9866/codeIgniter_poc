@@ -176,13 +176,25 @@ class UserController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $this->userModel->update($id, [
+        $updateData = [
             'first_name' => $this->request->getPost('first_name'),
             'last_name'  => $this->request->getPost('last_name'),
             'mobile'     => $this->request->getPost('mobile'),
             'department' => $this->request->getPost('department'),
             'status'     => $this->request->getPost('status'),
-        ]);
+        ];
+
+        $result = $this->userModel->update($id, $updateData);
+
+        // Debug logging to help trace if the database update is failing
+        log_message('debug', 'Attempting to update user ID ' . $id);
+        log_message('debug', 'Update Data: ' . json_encode($updateData));
+        log_message('debug', 'Update Result: ' . ($result ? 'Success' : 'Failed'));
+        log_message('debug', 'Model Errors: ' . json_encode($this->userModel->errors()));
+
+        if (!$result) {
+            return redirect()->back()->withInput()->with('error', 'Failed to update user in the database. Please check the logs.');
+        }
 
         return redirect()->to('/users')->with('success', 'User updated successfully.');
     }
