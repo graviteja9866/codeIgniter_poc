@@ -42,8 +42,10 @@
                                    value="<?= old('first_name') ?>"
                                    required
                                    minlength="2"
-                                   maxlength="100">
-                            <div class="invalid-feedback">First name is required (min 2 characters).</div>
+                                   maxlength="100"
+                                   pattern="[A-Za-z\s]+"
+                                   title="Only letters and spaces are allowed">
+                            <div class="invalid-feedback">First name must be at least 2 characters. Only letters and spaces allowed — no numbers or special characters.</div>
                         </div>
 
                         <!-- Last Name -->
@@ -59,8 +61,10 @@
                                    value="<?= old('last_name') ?>"
                                    required
                                    minlength="2"
-                                   maxlength="100">
-                            <div class="invalid-feedback">Last name is required (min 2 characters).</div>
+                                   maxlength="100"
+                                   pattern="[A-Za-z\s]+"
+                                   title="Only letters and spaces are allowed">
+                            <div class="invalid-feedback">Last name must be at least 2 characters. Only letters and spaces allowed — no numbers or special characters.</div>
                         </div>
 
                         <!-- Email -->
@@ -84,7 +88,7 @@
                             <label for="mobile" class="form-label">
                                 Mobile Number <span class="text-danger">*</span>
                             </label>
-                            <input type="text"
+                            <input type="tel"
                                    class="form-control"
                                    id="mobile"
                                    name="mobile"
@@ -92,8 +96,11 @@
                                    value="<?= old('mobile') ?>"
                                    required
                                    minlength="10"
-                                   maxlength="15">
-                            <div class="invalid-feedback">Mobile number is required (10-15 digits).</div>
+                                   maxlength="10"
+                                   pattern="[0-9]{10}"
+                                   inputmode="numeric"
+                                   title="Enter exactly 10 digits. No spaces, dashes or special characters.">
+                            <div class="invalid-feedback">Mobile number must be exactly 10 digits (numbers only — no spaces, dashes or special characters).</div>
                         </div>
 
                         <!-- Department -->
@@ -108,8 +115,10 @@
                                    placeholder="e.g. Engineering, Marketing, HR"
                                    value="<?= old('department') ?>"
                                    required
-                                   maxlength="100">
-                            <div class="invalid-feedback">Department is required.</div>
+                                   maxlength="100"
+                                   pattern="[A-Za-z\s]+"
+                                   title="Only letters and spaces are allowed">
+                            <div class="invalid-feedback">Department is required. Only letters and spaces allowed — no special characters.</div>
                         </div>
 
                         <!-- Status -->

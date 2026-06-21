@@ -74,15 +74,32 @@ class UserController extends BaseController
     public function store()
     {
         $rules = [
-            'first_name' => 'required|min_length[2]|max_length[100]',
-            'last_name'  => 'required|min_length[2]|max_length[100]',
+            'first_name' => 'required|min_length[2]|max_length[100]|regex_match[/^[a-zA-Z\s]+$/]',
+            'last_name'  => 'required|min_length[2]|max_length[100]|regex_match[/^[a-zA-Z\s]+$/]',
             'email'      => 'required|valid_email|max_length[100]|is_unique[users.email]',
-            'mobile'     => 'required|min_length[10]|max_length[15]|is_unique[users.mobile]',
-            'department' => 'required|max_length[100]',
+            'mobile'     => 'required|exact_length[10]|numeric|is_unique[users.mobile]',
+            'department' => 'required|max_length[100]|regex_match[/^[a-zA-Z\s]+$/]',
             'status'     => 'required|in_list[active,inactive]',
         ];
 
-        if (! $this->validate($rules)) {
+        $messages = [
+            'first_name' => [
+                'regex_match' => 'First name can only contain letters and spaces. No numbers or special characters allowed.',
+            ],
+            'last_name' => [
+                'regex_match' => 'Last name can only contain letters and spaces. No numbers or special characters allowed.',
+            ],
+            'mobile' => [
+                'exact_length' => 'Mobile number must be exactly 10 digits.',
+                'numeric'      => 'Mobile number must contain digits only. No spaces, dashes or special characters.',
+                'is_unique'    => 'This mobile number is already registered.',
+            ],
+            'department' => [
+                'regex_match' => 'Department can only contain letters and spaces. No special characters allowed.',
+            ],
+        ];
+
+        if (! $this->validate($rules, $messages)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
@@ -131,14 +148,31 @@ class UserController extends BaseController
         // Email cannot be changed, so we only validate other fields
         // Mobile uniqueness check excludes the current user's ID
         $rules = [
-            'first_name' => 'required|min_length[2]|max_length[100]',
-            'last_name'  => 'required|min_length[2]|max_length[100]',
-            'mobile'     => "required|min_length[10]|max_length[15]|is_unique[users.mobile,id,{$id}]",
-            'department' => 'required|max_length[100]',
+            'first_name' => 'required|min_length[2]|max_length[100]|regex_match[/^[a-zA-Z\s]+$/]',
+            'last_name'  => 'required|min_length[2]|max_length[100]|regex_match[/^[a-zA-Z\s]+$/]',
+            'mobile'     => "required|exact_length[10]|numeric|is_unique[users.mobile,id,{$id}]",
+            'department' => 'required|max_length[100]|regex_match[/^[a-zA-Z\s]+$/]',
             'status'     => 'required|in_list[active,inactive]',
         ];
 
-        if (! $this->validate($rules)) {
+        $messages = [
+            'first_name' => [
+                'regex_match' => 'First name can only contain letters and spaces. No numbers or special characters allowed.',
+            ],
+            'last_name' => [
+                'regex_match' => 'Last name can only contain letters and spaces. No numbers or special characters allowed.',
+            ],
+            'mobile' => [
+                'exact_length' => 'Mobile number must be exactly 10 digits.',
+                'numeric'      => 'Mobile number must contain digits only. No spaces, dashes or special characters.',
+                'is_unique'    => 'This mobile number is already registered.',
+            ],
+            'department' => [
+                'regex_match' => 'Department can only contain letters and spaces. No special characters allowed.',
+            ],
+        ];
+
+        if (! $this->validate($rules, $messages)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
