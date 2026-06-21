@@ -17,7 +17,7 @@
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
                         <strong>Please fix the following errors:</strong>
                         <ul class="mb-0 mt-2">
-                            <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                            <?php foreach (array_unique(session()->getFlashdata('errors')) as $error): ?>
                                 <li><?= esc($error) ?></li>
                             <?php endforeach; ?>
                         </ul>
